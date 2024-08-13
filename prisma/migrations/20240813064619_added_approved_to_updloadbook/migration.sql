@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "UploadedBook" ADD COLUMN     "approved" TEXT NOT NULL DEFAULT 'APPROVE',
+ALTER COLUMN "status" SET DEFAULT 'ACTIVE';

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Book" ADD COLUMN     "approved" TEXT NOT NULL DEFAULT 'APPROVE';

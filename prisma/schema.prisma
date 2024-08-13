@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  firstName     String
+  lastName      String
+  location      String
+  phoneNumber   String
+  password      String
+  status        String         @default("ACTIVE")
+  approved      String         @default("APPROVE")
+  role          String         @default("Owner")
+  uploadedbooks UploadedBook[] @relation("UploadedBook")
+  books         Book[]
+  avatar        String?
+  createdAt     DateTime       @default(now())
+}
+
+model UploadedBook {
+  id        String   @id @default(uuid())
+  book      Book     @relation(fields: [bookId], references: [id])
+  quantity  Int
+  rent      Int
+  cover     String
+  userId    String?
+  User      User?    @relation("UploadedBook", fields: [userId], references: [id])
+  status    String   @default("ACTIVE")
+  approved  String   @default("APPROVE")
+  bookId    String
+  createdAt DateTime @default(now())
+}
+
+model Book {
+  id           String         @id @default(uuid())
+  status       String
+  author       String
+  bookName     String
+  category     String
+  User         User?          @relation(fields: [userId], references: [id])
+  userId       String
+  bookNo       String
+  approved     String         @default("APPROVE")
+  UploadedBook UploadedBook[]
+  createdAt    DateTime       @default(now())
+}
